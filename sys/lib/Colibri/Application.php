@@ -146,7 +146,13 @@ class Application implements ApplicationInterface {
 
     $controller = new $Class();
 
-    call_user_func_array(array($controller, $method), $args);
+    if( method_exists( $controller,$method ) != false ) {
+		    call_user_func_array( array( $controller, $method ), $args );
+	  } 
+	  else {
+			  $controller = new \Colibri\Error();
+			  $controller->error404();
+	  }
 
     $this->response = $controller->render();
     $this->headers  = $controller->view->get_headers();
